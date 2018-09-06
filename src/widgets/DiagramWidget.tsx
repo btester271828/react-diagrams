@@ -435,6 +435,10 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 						event.stopPropagation();
 						const oldZoomFactor = diagramModel.getZoomLevel() / 100;
 						let scrollDelta = this.props.inverseZoom ? -event.deltaY : event.deltaY;
+						//rescale delta if deltaMode is lines instead of pixels (Firefox)
+						if (event.deltaMode === event.DOM_DELTA_LINE) {
+							scrollDelta *= 20;
+						}
 						//check if it is pinch gesture
 						if (event.ctrlKey && scrollDelta % 1 !== 0) {
 							/*Chrome and Firefox sends wheel event with deltaY that
